@@ -26,8 +26,38 @@ export const createProblem = async (req, res) => {
             const submissionResults = await submitBatch(submissions);
 
             const tokens = submissionResults.map((res) => res.token)
-        }
 
+            const results = await pollBatchResults(tokens)
+
+            for (let i = 0; i < results.length; i++) {
+                const result = results[i];
+
+                if (result.status.id !== 3) {
+                    return res.status(400).json({error: `Reference solution failed for language ${language} on testcase ${i + 1}`});
+                }
+            }   
+
+            const newProblem = await db.problem.create({
+                data: {
+                    title,  
+                    description,
+                    difficulty,
+                    tags,
+                    userId,
+                    example,
+                    constraints,
+                    hints,
+                    editorial,
+                    testcases,
+                    codeSnippets,
+                    referenceSolution,
+                    userId: req.user.id
+                }
+
+            });
+        }
+        
+        return res.status(201).json({problem: newProblem});
                 
     } catch (error) {
         
