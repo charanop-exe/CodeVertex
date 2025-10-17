@@ -56,13 +56,13 @@ export const createProblem = async (req, res) => {
                 description,
                 difficulty,
                 tags,
-                example,
+                examples,
                 constraints,
                 hints,
                 editorial,
                 testcases, // Note: Ensure your Prisma schema can handle these JSON objects
                 codeSnippets,
-                referenceSolution,
+                referenceSolutions,
                 userId: req.user.id // This is the correct and secure way
             }
         });
