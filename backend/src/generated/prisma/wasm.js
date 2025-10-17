@@ -121,6 +121,49 @@ exports.Prisma.ProblemScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SubmissionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  problemId: 'problemId',
+  SourceCode: 'SourceCode',
+  language: 'language',
+  stdin: 'stdin',
+  stderr: 'stderr',
+  stdout: 'stdout',
+  compileOutput: 'compileOutput',
+  status: 'status',
+  runtime: 'runtime',
+  memory: 'memory',
+  time: 'time',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TestCaseResultScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  testCase: 'testCase',
+  passed: 'passed',
+  stdout: 'stdout',
+  expected: 'expected',
+  stderr: 'stderr',
+  compileOutput: 'compileOutput',
+  status: 'status',
+  memory: 'memory',
+  time: 'time',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProblemSolvedScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  problemId: 'problemId',
+  solvedAt: 'solvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -158,7 +201,10 @@ exports.Difficulty = exports.$Enums.Difficulty = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Problem: 'Problem'
+  Problem: 'Problem',
+  Submission: 'Submission',
+  testCaseResult: 'testCaseResult',
+  ProblemSolved: 'ProblemSolved'
 };
 /**
  * Create the Client
@@ -207,13 +253,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum UserRole {\n  USER\n  ADMIN\n}\n\nenum Difficulty {\n  EASY\n  MEDIUM\n  HARD\n}\n\nmodel User {\n  id        String   @id @default(uuid())\n  name      String?\n  email     String   @unique\n  image     String?\n  role      UserRole @default(USER)\n  password  String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  problem Problem[]\n}\n\nmodel Problem {\n  id          String     @id @default(uuid())\n  title       String\n  description String\n  difficulty  Difficulty\n  tags        String[]\n  userId      String\n  examples    Json\n  constraints String\n  hints       String?\n  editorial   String?\n\n  testcases          Json\n  codeSnippets       Json\n  referenceSolutions Json\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // Relations\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n",
-  "inlineSchemaHash": "9fda277184edbb28b9252508514b5191f3ae013cac0ee441028038ccade047c5",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum UserRole {\n  USER\n  ADMIN\n}\n\nenum Difficulty {\n  EASY\n  MEDIUM\n  HARD\n}\n\nmodel User {\n  id        String   @id @default(uuid())\n  name      String?\n  email     String   @unique\n  image     String?\n  role      UserRole @default(USER)\n  password  String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  problem       Problem[]\n  submissions   Submission[]\n  problemSolved ProblemSolved[]\n}\n\nmodel Problem {\n  id          String     @id @default(uuid())\n  title       String\n  description String\n  difficulty  Difficulty\n  tags        String[]\n  userId      String\n  examples    Json\n  constraints String\n  hints       String?\n  editorial   String?\n\n  testcases          Json\n  codeSnippets       Json\n  referenceSolutions Json\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  submissions Submission[]\n  solvedBy    ProblemSolved[]\n  // Relations\n  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\nmodel Submission {\n  id            String  @id @default(uuid())\n  userId        String\n  problemId     String\n  SourceCode    Json\n  language      String\n  stdin         String?\n  stderr        String?\n  stdout        String?\n  compileOutput String?\n  status        String\n  runtime       Float?\n  memory        Float?\n  time          String\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // Relations\n  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)\n  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)\n\n  testCaseResults testCaseResult[]\n}\n\nmodel testCaseResult {\n  id            String  @id @default(uuid())\n  submissionId  String\n  testCase      Int\n  passed        Boolean\n  stdout        String?\n  expected      String\n  stderr        String?\n  compileOutput String?\n  status        String\n  memory        String?\n  time          String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // Relations\n  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)\n\n  @@index([submissionId])\n}\n\nmodel ProblemSolved {\n  id        String   @id @default(uuid())\n  userId    String\n  problemId String\n  solvedAt  DateTime @default(now())\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // Relations\n  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)\n  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)\n\n  @@unique([userId, problemId])\n}\n",
+  "inlineSchemaHash": "90cc1b18b749059d12a5f1202e5b2637601dfad141989b608a50328b9ae4f396",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"UserRole\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"problem\",\"kind\":\"object\",\"type\":\"Problem\",\"relationName\":\"ProblemToUser\"}],\"dbName\":null},\"Problem\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"difficulty\",\"kind\":\"enum\",\"type\":\"Difficulty\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"examples\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"constraints\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hints\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"editorial\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"testcases\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"codeSnippets\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"referenceSolutions\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ProblemToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"UserRole\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"problem\",\"kind\":\"object\",\"type\":\"Problem\",\"relationName\":\"ProblemToUser\"},{\"name\":\"submissions\",\"kind\":\"object\",\"type\":\"Submission\",\"relationName\":\"SubmissionToUser\"},{\"name\":\"problemSolved\",\"kind\":\"object\",\"type\":\"ProblemSolved\",\"relationName\":\"ProblemSolvedToUser\"}],\"dbName\":null},\"Problem\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"difficulty\",\"kind\":\"enum\",\"type\":\"Difficulty\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"examples\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"constraints\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hints\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"editorial\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"testcases\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"codeSnippets\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"referenceSolutions\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"submissions\",\"kind\":\"object\",\"type\":\"Submission\",\"relationName\":\"ProblemToSubmission\"},{\"name\":\"solvedBy\",\"kind\":\"object\",\"type\":\"ProblemSolved\",\"relationName\":\"ProblemToProblemSolved\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ProblemToUser\"}],\"dbName\":null},\"Submission\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"problemId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"SourceCode\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"language\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stdin\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stderr\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stdout\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"compileOutput\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"runtime\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"memory\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"time\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SubmissionToUser\"},{\"name\":\"problem\",\"kind\":\"object\",\"type\":\"Problem\",\"relationName\":\"ProblemToSubmission\"},{\"name\":\"testCaseResults\",\"kind\":\"object\",\"type\":\"testCaseResult\",\"relationName\":\"SubmissionTotestCaseResult\"}],\"dbName\":null},\"testCaseResult\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"submissionId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"testCase\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"passed\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"stdout\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expected\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stderr\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"compileOutput\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"memory\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"time\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"submission\",\"kind\":\"object\",\"type\":\"Submission\",\"relationName\":\"SubmissionTotestCaseResult\"}],\"dbName\":null},\"ProblemSolved\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"problemId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"solvedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ProblemSolvedToUser\"},{\"name\":\"problem\",\"kind\":\"object\",\"type\":\"Problem\",\"relationName\":\"ProblemToProblemSolved\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),
