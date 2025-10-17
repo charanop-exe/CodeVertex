@@ -94,16 +94,20 @@ model testCaseResult {
   id            String   @id @default(uuid())
   submissionId  String
   testCase      Int
-  passed       Boolean
-  expectedOutput String
-  actualOutput   String
+  passed        Boolean
+  stdout        String?
+  expected      String
+  stderr        String?
+  compileOutput String?
   status        String
-  runtime       Float?
-  memory        Float?
+  memory        String?
+  time          String?
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   // Relations
   submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+@@index([submissionId])
 }
