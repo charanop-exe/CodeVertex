@@ -45,14 +45,14 @@ model Problem {
   difficulty  Difficulty
   tags        String[]
   userId      String
-  example     Json
+  examples    Json
   constraints String
   hints       String?
   editorial   String?
 
-  testcases         Json
-  codeSnippets      Json
-  referenceSolution Json
+  testcases          Json
+  codeSnippets       Json
+  referenceSolutions Json
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
