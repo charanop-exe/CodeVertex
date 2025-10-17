@@ -122,7 +122,10 @@ export const getProblemById = async (req, res) => {
             problem
         })
     } catch (error) {
+        console.log(error);
+        
         return res.status(500).json({
+            
             error:"Error in Fetching Problem By Id"
         })
     }
