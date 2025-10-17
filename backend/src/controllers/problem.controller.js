@@ -106,7 +106,7 @@ export const getProblemById = async (req, res) => {
         const id  = req.params.id;
         const problem = await db.problem.findUnique({
             where : {
-                id : id
+                id
             }
         });
 
@@ -132,6 +132,40 @@ export const getProblemById = async (req, res) => {
 };
 
 
-export const updateProblem = async (req, res) => { /* ... */ };
+export const updateProblem = async (req, res) => { 
+    const id = req.params.id;
+    const { title, description, difficulty, tags, examples, constraints, hints, editorial, testcases, codeSnippets, referenceSolutions } = req.body;
+    try {
+        const updatedProblem = await db.problem.update({
+            where: { id },
+            data: {
+                title,
+                description,
+                difficulty,
+                tags,
+                examples,
+                constraints,
+                hints,
+                editorial,
+                testcases,
+                codeSnippets,
+                referenceSolutions
+            }
+        });
+        res.status(200).json({
+            sucess: true,
+            message: "Problem Updated Successfully",
+            problem: updatedProblem
+        });
+    } catch (error) {
+        console.error("Error updating problem:", error);
+        return res.status(500).json({
+            error: "Error in Updating Problem"
+        });
+    }
+
+};
+
+
 export const deleteProblem = async (req, res) => { /* ... */ };
 export const getAllSolvedProblemsByUser = async (req, res) => { /* ... */ };
