@@ -5,7 +5,7 @@ import { getJudge0LanguageId, submitBatch, pollBatchResults } from '../libs/judg
 export const createProblem = async (req, res) => {
     // FIX: Removed 'userId' from destructuring to avoid confusion.
     // We will use req.user.id from the authenticated user.
-    const { title, description, difficulty, tags, example, constraints, hints, editorial, testcases, codeSnippets, referenceSolution } = req.body;
+    const { title, description, difficulty, tags, examples, constraints, hints, editorial, testcases, codeSnippets, referenceSolutions } = req.body;
 
     if (req.user.role !== "ADMIN") {
         return res.status(403).json({ message: "Only admins can create problems" });
@@ -13,7 +13,7 @@ export const createProblem = async (req, res) => {
 
     try {
         // First, validate ALL reference solutions before creating the problem.
-        for (const [language, solutionCode] of Object.entries(referenceSolution)) {
+        for (const [language, solutionCode] of Object.entries(referenceSolutions)) {
             const languageId = getJudge0LanguageId(language);
 
             if (!languageId) {
