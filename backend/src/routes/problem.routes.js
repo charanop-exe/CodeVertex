@@ -1,6 +1,6 @@
 import express from "express";
 import authMiddleware, {checkAdmin} from "../middleware/auth.middleware.js";
-import { createProblem, deleteProblem, getAllProblemById, getAllProblems, getAllSolvedProblemsByUser, updateProblem } from "../controllers/problem.controller.js";
+import { createProblem, deleteProblem, getProblemById, getAllProblems, getAllSolvedProblemsByUser, updateProblem } from "../controllers/problem.controller.js";
 
 
 
@@ -11,7 +11,7 @@ problemRoutes.post("/create-problem", authMiddleware , checkAdmin , createProble
 
 problemRoutes.get("/get-all-problems", authMiddleware, getAllProblems)
 
-problemRoutes.get("/get-problem/:id", authMiddleware, getAllProblemById)
+problemRoutes.get("/get-problem/:id", authMiddleware, getProblemById)
 
 problemRoutes.put("/update-problem/:id", authMiddleware, checkAdmin, updateProblem)
 
