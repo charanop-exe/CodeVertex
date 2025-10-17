@@ -1,86 +1,86 @@
 import { db } from "../libs/db.js";
-
+// Make sure your helper functions are imported
+import { getJudge0LanguageId, submitBatch, pollBatchResults } from '../libs/judge0.libs.js'; // Adjust path as needed
 
 export const createProblem = async (req, res) => {
-	const {title, description, difficulty, tags, userId, example, constraints, hints, editorial, testcases, codeSnippets, referenceSolution} = req.body
-    
-    if (req.user.role !== "ADMIN"){
-        return res.status(403).json({message: "Only admins can create problems"})
+    // FIX: Removed 'userId' from destructuring to avoid confusion.
+    // We will use req.user.id from the authenticated user.
+    const { title, description, difficulty, tags, example, constraints, hints, editorial, testcases, codeSnippets, referenceSolution } = req.body;
+
+    if (req.user.role !== "ADMIN") {
+        return res.status(403).json({ message: "Only admins can create problems" });
     }
 
     try {
+        // First, validate ALL reference solutions before creating the problem.
         for (const [language, solutionCode] of Object.entries(referenceSolution)) {
             const languageId = getJudge0LanguageId(language);
 
             if (!languageId) {
-                return res.status(400).json({error: `Unsupported language: ${language}`});
+                return res.status(400).json({ error: `Unsupported language: ${language}` });
             }
-            
-            const submission = testcases.map(({input, output}) => ({
+
+            // FIX: Renamed variable to 'submissions' (plural) for clarity.
+            const submissions = testcases.map(({ input, output }) => ({
                 source_code: solutionCode,
-                language_id: languageId,                
+                language_id: languageId,
                 stdin: input,
                 expected_output: output
             }));
 
+            // FIX: Now using the correct variable name 'submissions'.
             const submissionResults = await submitBatch(submissions);
-
-            const tokens = submissionResults.map((res) => res.token)
-
-            const results = await pollBatchResults(tokens)
+            const tokens = submissionResults.map((res) => res.token);
+            const results = await pollBatchResults(tokens);
 
             for (let i = 0; i < results.length; i++) {
                 const result = results[i];
-
+                // Status 3 means "Accepted"
                 if (result.status.id !== 3) {
-                    return res.status(400).json({error: `Reference solution failed for language ${language} on testcase ${i + 1}`});
+                    return res.status(400).json({
+                        error: `Reference solution failed for language ${language} on testcase ${i + 1}`,
+                        details: {
+                            status: result.status,
+                            stderr: result.stderr || null,
+                            stdout: result.stdout || null
+                        }
+                    });
                 }
-            }   
-
-            const newProblem = await db.problem.create({
-                data: {
-                    title,  
-                    description,
-                    difficulty,
-                    tags,
-                    userId,
-                    example,
-                    constraints,
-                    hints,
-                    editorial,
-                    testcases,
-                    codeSnippets,
-                    referenceSolution,
-                    userId: req.user.id
-                }
-
-            });
+            }
         }
-        
-        return res.status(201).json({problem: newProblem});
-                
+
+        // FIX: Create the problem in the database ONLY AFTER all solutions are validated.
+        const newProblem = await db.problem.create({
+            data: {
+                title,
+                description,
+                difficulty,
+                tags,
+                example,
+                constraints,
+                hints,
+                editorial,
+                testcases, // Note: Ensure your Prisma schema can handle these JSON objects
+                codeSnippets,
+                referenceSolution,
+                userId: req.user.id // This is the correct and secure way
+            }
+        });
+
+        // FIX: This return statement now works correctly.
+        return res.status(201).json({ problem: newProblem });
+
     } catch (error) {
-        
+        // FIX: Added error handling to the catch block.
+        console.error("Failed to create problem:", error);
+        return res.status(500).json({ message: "Internal server error." });
     }
 };
 
+// --- Your other functions ---
 
-export const getAllProblems = async (req,res) => {
-
-}
-
-export const getAllProblemById = async (req,res) => {
-
-}
-
-export const updateProblem = async (req, res)=>{
-
-}
-
-export const deleteProblem = async (req,res) => {
-
-}
-
-export const getAllSolvedProblemsByUser = async (req, res)=>{
-    
-}
+export const getAllProblems = async (req, res) => { /* ... */ };
+export const getAllProblemById = async (req, res) => { /* ... */ };
+export const updateProblem = async (req, res) => { /* ... */ };
+export const deleteProblem = async (req, res) => { /* ... */ };
+export const getAllSolvedProblemsByUser = async (req, res) => { /* ... */ };

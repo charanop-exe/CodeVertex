@@ -23,7 +23,7 @@ export const pollBatchResults = async (tokens) => {
 
         const results = data.submissions;
 
-        const isAllDone = results.every((r) => result.status.id >= 3);
+        const isAllDone = results.every((r) => r.status.id >= 3);
 
         if (isAllDone) {
             return results;
@@ -36,9 +36,14 @@ export const pollBatchResults = async (tokens) => {
 
 
 export const submitBatch = async (submissions) => {
-
-    const {data} = await axios.post(`${process.env.JUDGE0_API_URL}/submissions/batch?base64_encoded=false`, {
-        submissions,
-    })
-
-}
+    try {
+        const { data } = await axios.post(`${process.env.JUDGE0_API_URL}/submissions/batch?base64_encoded=false`, {
+            submissions,
+        });
+        return data;
+        
+    } catch (error) {
+        console.error("Error submitting to Judge0:", error.response?.data || error.message);
+        throw new Error("Failed to submit batch to Judge0");
+    }
+};
