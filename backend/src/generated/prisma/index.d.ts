@@ -3824,7 +3824,7 @@ export namespace Prisma {
     id: number
     userId: number
     problemId: number
-    SourceCode: number
+    sourceCode: number
     language: number
     stdin: number
     stderr: number
@@ -3888,7 +3888,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     problemId?: true
-    SourceCode?: true
+    sourceCode?: true
     language?: true
     stdin?: true
     stderr?: true
@@ -3993,7 +3993,7 @@ export namespace Prisma {
     id: string
     userId: string
     problemId: string
-    SourceCode: JsonValue
+    sourceCode: JsonValue
     language: string
     stdin: string | null
     stderr: string | null
@@ -4030,7 +4030,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     problemId?: boolean
-    SourceCode?: boolean
+    sourceCode?: boolean
     language?: boolean
     stdin?: boolean
     stderr?: boolean
@@ -4052,7 +4052,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     problemId?: boolean
-    SourceCode?: boolean
+    sourceCode?: boolean
     language?: boolean
     stdin?: boolean
     stderr?: boolean
@@ -4072,7 +4072,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     problemId?: boolean
-    SourceCode?: boolean
+    sourceCode?: boolean
     language?: boolean
     stdin?: boolean
     stderr?: boolean
@@ -4092,7 +4092,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     problemId?: boolean
-    SourceCode?: boolean
+    sourceCode?: boolean
     language?: boolean
     stdin?: boolean
     stderr?: boolean
@@ -4106,7 +4106,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "problemId" | "SourceCode" | "language" | "stdin" | "stderr" | "stdout" | "compileOutput" | "status" | "runtime" | "memory" | "time" | "createdAt" | "updatedAt", ExtArgs["result"]["submission"]>
+  export type SubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "problemId" | "sourceCode" | "language" | "stdin" | "stderr" | "stdout" | "compileOutput" | "status" | "runtime" | "memory" | "time" | "createdAt" | "updatedAt", ExtArgs["result"]["submission"]>
   export type SubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     problem?: boolean | ProblemDefaultArgs<ExtArgs>
@@ -4133,7 +4133,7 @@ export namespace Prisma {
       id: string
       userId: string
       problemId: string
-      SourceCode: Prisma.JsonValue
+      sourceCode: Prisma.JsonValue
       language: string
       stdin: string | null
       stderr: string | null
@@ -4574,7 +4574,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Submission", 'String'>
     readonly userId: FieldRef<"Submission", 'String'>
     readonly problemId: FieldRef<"Submission", 'String'>
-    readonly SourceCode: FieldRef<"Submission", 'Json'>
+    readonly sourceCode: FieldRef<"Submission", 'Json'>
     readonly language: FieldRef<"Submission", 'String'>
     readonly stdin: FieldRef<"Submission", 'String'>
     readonly stderr: FieldRef<"Submission", 'String'>
@@ -7352,7 +7352,7 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     problemId: 'problemId',
-    SourceCode: 'SourceCode',
+    sourceCode: 'sourceCode',
     language: 'language',
     stdin: 'stdin',
     stderr: 'stderr',
@@ -7747,7 +7747,7 @@ export namespace Prisma {
     id?: StringFilter<"Submission"> | string
     userId?: StringFilter<"Submission"> | string
     problemId?: StringFilter<"Submission"> | string
-    SourceCode?: JsonFilter<"Submission">
+    sourceCode?: JsonFilter<"Submission">
     language?: StringFilter<"Submission"> | string
     stdin?: StringNullableFilter<"Submission"> | string | null
     stderr?: StringNullableFilter<"Submission"> | string | null
@@ -7768,7 +7768,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     problemId?: SortOrder
-    SourceCode?: SortOrder
+    sourceCode?: SortOrder
     language?: SortOrder
     stdin?: SortOrderInput | SortOrder
     stderr?: SortOrderInput | SortOrder
@@ -7792,7 +7792,7 @@ export namespace Prisma {
     NOT?: SubmissionWhereInput | SubmissionWhereInput[]
     userId?: StringFilter<"Submission"> | string
     problemId?: StringFilter<"Submission"> | string
-    SourceCode?: JsonFilter<"Submission">
+    sourceCode?: JsonFilter<"Submission">
     language?: StringFilter<"Submission"> | string
     stdin?: StringNullableFilter<"Submission"> | string | null
     stderr?: StringNullableFilter<"Submission"> | string | null
@@ -7813,7 +7813,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     problemId?: SortOrder
-    SourceCode?: SortOrder
+    sourceCode?: SortOrder
     language?: SortOrder
     stdin?: SortOrderInput | SortOrder
     stderr?: SortOrderInput | SortOrder
@@ -7839,7 +7839,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Submission"> | string
     userId?: StringWithAggregatesFilter<"Submission"> | string
     problemId?: StringWithAggregatesFilter<"Submission"> | string
-    SourceCode?: JsonWithAggregatesFilter<"Submission">
+    sourceCode?: JsonWithAggregatesFilter<"Submission">
     language?: StringWithAggregatesFilter<"Submission"> | string
     stdin?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     stderr?: StringNullableWithAggregatesFilter<"Submission"> | string | null
@@ -8238,7 +8238,7 @@ export namespace Prisma {
 
   export type SubmissionCreateInput = {
     id?: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -8259,7 +8259,7 @@ export namespace Prisma {
     id?: string
     userId: string
     problemId: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -8276,7 +8276,7 @@ export namespace Prisma {
 
   export type SubmissionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8297,7 +8297,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     problemId?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8316,7 +8316,7 @@ export namespace Prisma {
     id?: string
     userId: string
     problemId: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -8332,7 +8332,7 @@ export namespace Prisma {
 
   export type SubmissionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8350,7 +8350,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     problemId?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8865,7 +8865,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     problemId?: SortOrder
-    SourceCode?: SortOrder
+    sourceCode?: SortOrder
     language?: SortOrder
     stdin?: SortOrder
     stderr?: SortOrder
@@ -9740,7 +9740,7 @@ export namespace Prisma {
 
   export type SubmissionCreateWithoutUserInput = {
     id?: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -9759,7 +9759,7 @@ export namespace Prisma {
   export type SubmissionUncheckedCreateWithoutUserInput = {
     id?: string
     problemId: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -9870,7 +9870,7 @@ export namespace Prisma {
     id?: StringFilter<"Submission"> | string
     userId?: StringFilter<"Submission"> | string
     problemId?: StringFilter<"Submission"> | string
-    SourceCode?: JsonFilter<"Submission">
+    sourceCode?: JsonFilter<"Submission">
     language?: StringFilter<"Submission"> | string
     stdin?: StringNullableFilter<"Submission"> | string | null
     stderr?: StringNullableFilter<"Submission"> | string | null
@@ -9914,7 +9914,7 @@ export namespace Prisma {
 
   export type SubmissionCreateWithoutProblemInput = {
     id?: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -9933,7 +9933,7 @@ export namespace Prisma {
   export type SubmissionUncheckedCreateWithoutProblemInput = {
     id?: string
     userId: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -10321,7 +10321,7 @@ export namespace Prisma {
 
   export type SubmissionCreateWithoutTestCaseResultsInput = {
     id?: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -10341,7 +10341,7 @@ export namespace Prisma {
     id?: string
     userId: string
     problemId: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -10373,7 +10373,7 @@ export namespace Prisma {
 
   export type SubmissionUpdateWithoutTestCaseResultsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10393,7 +10393,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     problemId?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10587,7 +10587,7 @@ export namespace Prisma {
   export type SubmissionCreateManyUserInput = {
     id?: string
     problemId: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -10666,7 +10666,7 @@ export namespace Prisma {
 
   export type SubmissionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10685,7 +10685,7 @@ export namespace Prisma {
   export type SubmissionUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     problemId?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10703,7 +10703,7 @@ export namespace Prisma {
   export type SubmissionUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     problemId?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10744,7 +10744,7 @@ export namespace Prisma {
   export type SubmissionCreateManyProblemInput = {
     id?: string
     userId: string
-    SourceCode: JsonNullValueInput | InputJsonValue
+    sourceCode: JsonNullValueInput | InputJsonValue
     language: string
     stdin?: string | null
     stderr?: string | null
@@ -10768,7 +10768,7 @@ export namespace Prisma {
 
   export type SubmissionUpdateWithoutProblemInput = {
     id?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10787,7 +10787,7 @@ export namespace Prisma {
   export type SubmissionUncheckedUpdateWithoutProblemInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10805,7 +10805,7 @@ export namespace Prisma {
   export type SubmissionUncheckedUpdateManyWithoutProblemInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    SourceCode?: JsonNullValueInput | InputJsonValue
+    sourceCode?: JsonNullValueInput | InputJsonValue
     language?: StringFieldUpdateOperationsInput | string
     stdin?: NullableStringFieldUpdateOperationsInput | string | null
     stderr?: NullableStringFieldUpdateOperationsInput | string | null
