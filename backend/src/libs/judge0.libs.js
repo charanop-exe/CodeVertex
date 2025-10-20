@@ -47,3 +47,14 @@ export const submitBatch = async (submissions) => {
         throw new Error("Failed to submit batch to Judge0");
     }
 };
+
+
+export const getLanguageName = (language_id) => {
+    const languageMap = {  
+        51: "CPP",
+        62: "JAVA",
+        63: "JAVASCRIPT",
+        71: "PYTHON",
+    };
+    return languageMap[language_id] || "UNKNOWN";
+}
