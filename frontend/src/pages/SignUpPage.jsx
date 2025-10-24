@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import {z} from "zod"
 import AuthImagePattern from '../components/AuthImagePattern';
-// import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 const LoginSchema = z.object({
   email: z.string().email("Enter a valid Email"),
@@ -23,8 +23,9 @@ const LoginSchema = z.object({
 const SignUpPage = () => {
 
     const [showPassword, setShowPassword] = useState(false)
-    // const {signup , isSigninUp} = useAuthStore()
-      const {
+    const {signup , isSigninUp} = useAuthStore()
+    
+    const {
           register,
           handleSubmit,
           formState: { errors },
@@ -32,7 +33,12 @@ const SignUpPage = () => {
           resolver: zodResolver(LoginSchema),
       });
     const onSubmit = async (data)=>{
-        console.log(data)
+      try {
+        await signup(data)
+        console.log("Signup successful", data);
+      } catch (error) {
+        console.error("Signup failed", error);
+      }
     }
 
 
