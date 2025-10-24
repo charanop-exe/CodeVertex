@@ -5,9 +5,9 @@ import { db } from '../libs/db.js';
 import { UserRole } from '../generated/prisma/index.js'; 
 
 const register = async (req, res) => {
-    const { email, username, password } = req.body;
+    const { email, name, password } = req.body;
 
-    if (!email || !username || !password) {
+    if (!email || !name || !password) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -29,7 +29,7 @@ const register = async (req, res) => {
                 email,
                 // FIX 1: The variable from the request is 'username', but the database field is 'name'.
                 // This correctly maps the 'username' from the request to the 'name' field in the database.
-                name: username, 
+                name: name, 
                 password: hashedPassword,
                 role: UserRole.USER 
             }
