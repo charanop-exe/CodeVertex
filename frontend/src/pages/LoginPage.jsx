@@ -7,15 +7,16 @@ import {
   Code,
   Eye,
   EyeOff,
+  Loader,
   Loader2,
   Lock,
   Mail,
 } from "lucide-react";
 import {z} from "zod"
 import AuthImagePattern from '../components/AuthImagePattern';
-// import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore } from "../store/useAuthStore";
 
-const SignUpSchema = z.object({
+const LoginSchema = z.object({
   email: z.string().email("Enter a valid Email"),
   password: z.string().min(6, "Password must be more than 6 characters"),
   // name: z.string().min(3, "Must be more than 3 characters"),
@@ -23,16 +24,21 @@ const SignUpSchema = z.object({
 const LoginPage = () => {
 
     const [showPassword, setShowPassword] = useState(false)
-    // const {signup , isSigninUp} = useAuthStore()
+    const {isLoggingIn , login} = useAuthStore()
       const {
           register,
           handleSubmit,
           formState: { errors },
         } = useForm({
-          resolver: zodResolver(SignUpSchema),
+          resolver: zodResolver(LoginSchema),
       });
     const onSubmit = async (data)=>{
-        console.log(data)
+        try {
+          await login(data)
+          console.log("Login successful", data);
+        } catch (error) {
+          console.error("Login failed", error);
+        }
     }
 
 
@@ -54,29 +60,6 @@ const LoginPage = () => {
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             
-            {/* name */}
-            {/* <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Name</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Code className="h-5 w-5 text-base-content/40" />
-                </div>
-                <input
-                  type="text"
-                  {...register("name")}
-                  className={`input input-bordered w-full pl-10 ${
-                    errors.name ? "input-error" : ""
-                  }`}
-                  placeholder="John Doe"
-                />
-              </div>
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-              )}              
-            </div> */}
-
             {/* Email */}
             <div className="form-control">
               <label className="label">
@@ -138,17 +121,16 @@ const LoginPage = () => {
             <button
               type="submit"
               className="btn btn-primary w-full"
-            //  disabled={isSigninUp}
+             disabled={isLoggingIn}
             >
-              LogIn
-               {/* {isSigninUp ? (
+               {isLoggingIn ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
                   Loading...
                 </>
               ) : (
                 "Sign in"
-              )} */}
+              )}
             </button>
           </form>
 

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import Toaster from 'react-hot-toast';
-
+import { Loader } from "lucide-react";
 
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";

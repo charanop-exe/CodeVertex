@@ -8,6 +8,7 @@ import {
   Eye,
   EyeOff,
   Loader2,
+  Loader,
   Lock,
   Mail,
 } from "lucide-react";
@@ -15,7 +16,7 @@ import {z} from "zod"
 import AuthImagePattern from '../components/AuthImagePattern';
 import { useAuthStore } from "../store/useAuthStore";
 
-const LoginSchema = z.object({
+const SignUpSchema = z.object({
   email: z.string().email("Enter a valid Email"),
   password: z.string().min(6, "Password must be more than 6 characters"),
   name: z.string().min(3, "Must be more than 3 characters"),
@@ -24,13 +25,13 @@ const SignUpPage = () => {
 
     const [showPassword, setShowPassword] = useState(false)
     const {signup , isSigninUp} = useAuthStore()
-    
+
     const {
           register,
           handleSubmit,
           formState: { errors },
         } = useForm({
-          resolver: zodResolver(LoginSchema),
+          resolver: zodResolver(SignUpSchema),
       });
     const onSubmit = async (data)=>{
       try {
@@ -144,17 +145,16 @@ const SignUpPage = () => {
             <button
               type="submit"
               className="btn btn-primary w-full"
-            //  disabled={isSigninUp}
+             disabled={isSigninUp}
             >
-              Sign Up
-               {/* {isSigninUp ? (
+               {isSigninUp ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
                   Loading...
                 </>
               ) : (
                 "Sign in"
-              )} */}
+              )}
             </button>
           </form>
 
