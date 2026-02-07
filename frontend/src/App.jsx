@@ -7,6 +7,8 @@ import { Loader } from "lucide-react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import Layout from "./Layout/Layout";
+
 import { useAuthStore } from "./store/useAuthStore";
 
 const App = () => {
@@ -30,8 +32,10 @@ const App = () => {
       <Toaster position="top-center" reverseOrder={false} />
       <div className="flex justify-center items-center flex-col text-3xl font-extrabold">
         <Routes>
+        <Route path="/" element={<Layout/>}/>
+        
         <Route
-          path="/"
+          index
           element={authUser ? <HomePage /> : <Navigate to = {"/login"}/>}
         />
 
