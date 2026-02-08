@@ -70,11 +70,21 @@ export const createProblem = async (req, res) => {
         // FIX: This return statement now works correctly.
         return res.status(201).json({ problem: newProblem });
 
+    // } catch (error) {
+    //     // FIX: Added error handling to the catch block.
+    //     console.error("Failed to create problem:", error);
+    //     return res.status(500).json({ message: "Internal server error." });
+    // }
     } catch (error) {
-        // FIX: Added error handling to the catch block.
-        console.error("Failed to create problem:", error);
-        return res.status(500).json({ message: "Internal server error." });
+        console.error("🔥 CREATE PROBLEM ERROR:", error);
+
+        return res.status(500).json({
+            message: "Internal server error",
+            error: error.message,
+            stack: error.stack
+        });
     }
+
 };
 
 // --- Your other functions ---
