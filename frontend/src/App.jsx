@@ -7,6 +7,8 @@ import { Loader } from "lucide-react";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import AdminRoute from "./components/AdminRoute";
+import AddProblem from "./pages/AddProblem";
 import Layout from "./Layout/Layout";
 
 import { useAuthStore } from "./store/useAuthStore";
@@ -32,23 +34,30 @@ const App = () => {
       <Toaster position="top-center" reverseOrder={false} />
       <div className="flex justify-center items-center flex-col text-3xl font-extrabold">
         <Routes>
-        <Route path="/" element={<Layout/>}/>
-        
-        <Route
-          index
-          element={authUser ? <HomePage /> : <Navigate to = {"/login"}/>}
-        />
+          <Route path="/" element={<Layout />} />
 
-        <Route 
-          path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to={"/"}/>}
-        />
+          <Route
+            index
+            element={authUser ? <HomePage /> : <Navigate to={"/login"} />}
+          />
 
-        <Route
-          path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to = {"/"}/>}
-        />
-      </Routes>
+          <Route
+            path="/login"
+            element={!authUser ? <LoginPage /> : <Navigate to={"/"} />}
+          />
+
+          <Route
+            path="/signup"
+            element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />}
+          />
+
+          <Route element={<AdminRoute />}>
+            <Route
+              path="/add-problem"
+              element={authUser ? <AddProblem /> : <Navigate to="/" />}
+            />
+          </Route>
+        </Routes>
       </div>
     </>
   )
